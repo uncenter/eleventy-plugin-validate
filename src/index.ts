@@ -8,6 +8,8 @@ import { log } from './utils';
 
 const GLOBAL_DATA_KEY = '__eleventy-plugin-validate_options';
 
+export { z as zod } from 'zod';
+
 export function plugin(eleventyConfig: any, opts: Options) {
 	if (opts === null || typeof opts !== 'object')
 		throw new Error(`options: expected an object but received ${typeof opts}`);
