@@ -5,12 +5,17 @@ import { PluginError } from './error';
 import { log } from './utils';
 
 export const OptionsSchema = z.object({
-	schema: z.any(),
+	schemas: z.array(
+		z.object({
+			collections: z.optional(z.array(z.string())),
+			schema: z.any(),
+		}),
+	),
 });
 
 export type Options = z.infer<typeof OptionsSchema>;
 
-export const defaultOptions: Options = {};
+export const defaultOptions: Partial<Options> = {};
 
 /**
  *
