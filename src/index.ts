@@ -35,16 +35,8 @@ export function addValidations(exports: Record<never, never>) {
 
 function runValidations(data: any) {
 	const options = data[GLOBAL_DATA_KEY] as Options;
-	// schemas: [
-	//     {
-	//         collections: ['posts'],
-	//         schema: z.object({
-	//             abc: z.boolean(),
-	//         }),
-	//     },
 
 	for (const schema of options.schemas) {
-		console.log({ data });
 		const result = (schema.schema as unknown as ZodSchema).safeParse(data);
 		if (!result.success) {
 			const issues = result.error.issues;
