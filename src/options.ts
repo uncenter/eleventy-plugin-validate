@@ -1,3 +1,5 @@
+import type { ZodSchema } from 'zod';
+
 import extend from 'just-extend';
 import { z } from 'zod';
 
@@ -13,7 +15,12 @@ export const OptionsSchema = z.object({
 	),
 });
 
-export type Options = z.infer<typeof OptionsSchema>;
+export type Options = {
+	schemas: {
+		collections?: string[];
+		schema: ZodSchema;
+	}[];
+};
 
 export const defaultOptions: Partial<Options> = {};
 
