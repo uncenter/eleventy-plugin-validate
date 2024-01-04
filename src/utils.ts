@@ -29,7 +29,7 @@ function message(
 	type: 'log' | 'warn' | 'error' = 'log',
 	color?: string,
 ) {
-	const prefix = '[eleventy-plugin-icons] ';
+	const prefix = '[eleventy-plugin-validate]';
 	message = `${prefix}${message.split('\n').join(`\n${prefix}`)}`;
 	if (color) {
 		// @ts-expect-error - `color` can't index `kleur`.
