@@ -1,13 +1,12 @@
-const { plugin: pluginValidate } = require('../../dist/index.cjs');
-const { z } = require('zod');
+const { zod, plugin } = require('../../dist/index.cjs');
 
 module.exports = (eleventyConfig) => {
-	eleventyConfig.addPlugin(pluginValidate, {
+	eleventyConfig.addPlugin(plugin, {
 		schemas: [
 			{
 				collections: ['posts'],
-				schema: z.object({
-					abc: z.boolean(),
+				schema: zod.object({
+					abc: zod.boolean(),
 				}),
 			},
 		],
