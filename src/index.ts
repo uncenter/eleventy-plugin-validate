@@ -23,10 +23,9 @@ export function plugin(eleventyConfig: any, opts: Options) {
 				issue: ZodIssue;
 			}[] = [];
 			for (const schema of options.schemas) {
-				const items =
-					(schema.collections as any[])?.reduce((acc, collection) => {
-						return [...acc, ...collectionApi.getFilteredByTag(collection)];
-					}, []) || [];
+				const items = schema.collections
+					? collectionApi.getFilteredByTags(...schema.collections)
+					: collectionApi.getAll();
 
 				for (const item of items) {
 					const { data: fm } = item.template._frontMatter;
