@@ -1,5 +1,3 @@
 ---
-abc: 'true'
+abc: true
 ---
-
-A!

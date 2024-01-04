@@ -1,12 +1,8 @@
 import type { Options } from './options';
-import type { ZodSchema } from 'zod';
-
-import extend from 'just-extend';
+import type { ZodIssue } from 'zod';
 
 import { mergeOptions, validateOptions } from './options';
 import { log } from './utils';
-
-const GLOBAL_DATA_KEY = '__eleventy-plugin-validate_options';
 
 export { z as zod } from 'zod';
 
@@ -16,54 +12,71 @@ export function plugin(eleventyConfig: any, opts: Options) {
 	const options = mergeOptions(opts);
 	validateOptions(options);
 
-	eleventyConfig.addGlobalData(GLOBAL_DATA_KEY, options);
-}
+	eleventyConfig.addCollection(
+		'__eleventy-plugin-validate',
+		async (collectionApi: any) => {
+			const issues: {
+				data: {
+					path: string;
+					data: Record<string, unknown>;
+				};
+				issue: ZodIssue;
+			}[] = [];
+			for (const schema of options.schemas) {
+				const items =
+					(schema.collections as any[])?.reduce((acc, collection) => {
+						return [...acc, ...collectionApi.getFilteredByTag(collection)];
+					}, []) || [];
 
-export function addValidations(exports: Record<never, never>) {
-	return extend(
-		true,
-		{
-			eleventyComputed: {
-				__validate: (data: any) => {
-					runValidations(data);
-				},
-			},
-		},
-		exports,
-	);
-}
+				for (const item of items) {
+					const { data: fm } = item.template._frontMatter;
+					const result = schema.schema.safeParse(fm);
 
-function runValidations(data: any) {
-	const options = data[GLOBAL_DATA_KEY] as Options;
+					if (!result.success) {
+						issues.push(
+							...result.error.issues.map((i) => {
+								return {
+									data: {
+										path: item.inputPath,
+										data: fm,
+									},
+									issue: i,
+								};
+							}),
+						);
+					}
+				}
+			}
 
-	for (const schema of options.schemas) {
-		const result = (schema.schema as unknown as ZodSchema).safeParse(data);
-		if (!result.success) {
-			const issues = result.error.issues;
-			for (const issue of issues) {
+			for (const { data, issue } of issues) {
 				let message = '';
+				let path = issue.path.join('.');
+				path = path ? path + ': ' : '';
 				switch (issue.code) {
 					case 'invalid_type': {
-						message = `${issue.path.join('.')}: expected a${
+						message = `${path}expected a${
 							[...'aeiouy'].includes(issue.expected.at(0) as string) ? 'n' : ''
 						} ${issue.expected} but received ${issue.received}`;
 						break;
 					}
 					case 'unrecognized_keys': {
-						message = `${issue.path.join('.')}: unknown key${
+						message = `${path}unknown key${
 							issue.keys.length > 1 ? 's' : ''
 						} ${issue.keys.map((x: any) => `"${x}"`).join(', ')}`;
 						break;
 					}
 					default: {
-						throw new Error(`Unknown Zod issue code: ${issue.code}`);
+						throw new Error(
+							`Unknown or unimplemented Zod issue code: ${issue.code}`,
+						);
 					}
 				}
-				log.warn(`[${data.page.filePathStem}] ${message}`);
+				log.error(`[${data.path}] ${message}`);
 			}
-			throw new Error(
-				`Invalid frontmatter data provided for ${data.page.filePathStem}`,
-			);
-		}
-	}
+			if (issues.length > 0)
+				throw new Error(`Invalid frontmatter data provided`);
+
+			return [];
+		},
+	);
 }

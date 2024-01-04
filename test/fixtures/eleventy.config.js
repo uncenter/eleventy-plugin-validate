@@ -5,9 +5,11 @@ module.exports = (eleventyConfig) => {
 		schemas: [
 			{
 				collections: ['posts'],
-				schema: zod.object({
-					abc: zod.boolean(),
-				}),
+				schema: zod
+					.object({
+						abc: zod.boolean(),
+					})
+					.strict(),
 			},
 		],
 	});
