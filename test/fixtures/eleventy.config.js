@@ -7,7 +7,9 @@ module.exports = (eleventyConfig) => {
 				collections: ['posts'],
 				schema: zod
 					.object({
-						abc: zod.boolean(),
+						title: zod.string(),
+						description: zod.string(),
+						draft: zod.boolean(),
 					})
 					.strict(),
 			},
