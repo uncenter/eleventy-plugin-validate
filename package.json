@@ -22,7 +22,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "unbuild",
-		"test": "vitest",
+		"test": "echo 'No tests yet...'",
 		"lint": "eslint .",
 		"format": "prettier --write ."
 	},
