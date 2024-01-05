@@ -16,7 +16,7 @@ Setup the plugin in the Eleventy config file.
 **eleventy.config.js:**
 
 <details>
-    <summary>CJS></summary
+    <summary>CJS</summary
 
 ```js
 const { plugin: pluginValidate, zod } = require('eleventy-plugin-validate');
