@@ -17,6 +17,14 @@ module.exports = (eleventyConfig) => {
 					})
 					.strict(),
 			},
+			{
+				collections: ['tips'],
+				schema: zod.object({
+					title: zod.string(),
+					description: zod.string(),
+					date: zod.date(),
+				}),
+			},
 		],
 	});
 };
