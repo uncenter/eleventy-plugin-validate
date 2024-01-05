@@ -26,13 +26,16 @@ module.exports = (eleventyConfig) => {
 		// Example configuration:
 		schemas: [
 			{
-				// Run this schema on the 'posts' collection.
+				// `collections: ['posts']` tells the plugin
+				// to run this schema on the 'posts' collection.
 				// If you omit this property, the schema will run against
-				// collection items from the 'all' collection.
+				// collection items from the 'all' collection (a default
+				// collection that Eleventy generates for you).
 				collections: ['posts'],
-				// Add your Zod schema here,
-				// using the `zod` re-exported from the plugin.
-				// This should be a Zod object.
+
+				// `schema` should be a Zod object.
+				// You can use the `zod` re-exported from the plugin to
+				// create the schema.
 				schema: zod
 					.object({
 						title: zod.string(),
@@ -66,13 +69,16 @@ export default (eleventyConfig) => {
 		// Example configuration:
 		schemas: [
 			{
-				// Run this schema on the 'posts' collection.
+				// `collections: ['posts']` tells the plugin
+				// to run this schema on the 'posts' collection.
 				// If you omit this property, the schema will run against
-				// collection items from the 'all' collection.
+				// collection items from the 'all' collection (a default
+				// collection that Eleventy generates for you).
 				collections: ['posts'],
-				// Add your Zod schema here,
-				// using the `zod` re-exported from the plugin.
-				// This should be a Zod object.
+
+				// `schema` should be a Zod object.
+				// You can use the `zod` re-exported from the plugin to
+				// create the schema.
 				schema: zod
 					.object({
 						title: zod.string(),
@@ -96,6 +102,8 @@ export default (eleventyConfig) => {
 </details>
 
 Run Eleventy, and voila! The plugin will warn you about collection items that do not pass schema validation.
+
+For example:
 
 ```
 > eleventy --serve
