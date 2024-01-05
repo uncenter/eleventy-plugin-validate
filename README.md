@@ -15,52 +15,87 @@ Setup the plugin in the Eleventy config file.
 
 **eleventy.config.js:**
 
+<details>
+    <summary>CJS></summary
+
 ```js
-const { plugin as pluginValidate, zod } = require('eleventy-plugin-validate');
+const { plugin: pluginValidate, zod } = require('eleventy-plugin-validate');
 
 module.exports = (eleventyConfig) => {
 	eleventyConfig.addPlugin(pluginValidate, {
+		// Example configuration:
 		schemas: [
 			{
 				// Run this schema on the 'posts' collection.
+				// If you omit this property, the schema will run against
+				// collection items from the 'all' collection.
 				collections: ['posts'],
-				// Add your Zod schema here, using the `zod` exported from the plugin.
+				// Add your Zod schema here,
+				// using the `zod` re-exported from the plugin.
+				// This should be a Zod object.
 				schema: zod
 					.object({
 						title: zod.string(),
 						description: zod.string(),
 						draft: zod.boolean(),
 					})
+					// I suggest adding .strict() to your schema
+					// for even more accurate validation.
+					// With .strict(), extra properties
+					// you have not specified in the schema object
+					// will cause an error. For example, if you have an
+					// optional property "edited", but you misspell it as
+					// "edtied", .strict() will warn you!
 					.strict(),
 			},
 		],
 	});
-}
-```
-
-Make sure you have actual collections to validate.
-
-**[input-folder]/[directory]/[directory-data-file].11tydata.js (e.g. src/posts/posts.11tydata.js):**
-
-```js
-module.exports = {
-	tags: ['posts'],
 };
 ```
 
-Add an item for the collection(s) with some data!
+</details>
 
-**[input-folder]/[directory]/[file] (e.g. src/posts/hello-world.md):**
+<details>
+    <summary>ESM (requires <code>@11ty/eleventy@v3</code>)</summary>
 
-```yaml
----
-title: true
-description: 1
-draft: 'string'
----
+```js
+import { plugin as pluginValidate, zod } from 'eleventy-plugin-validate';
+
+export default (eleventyConfig) => {
+	eleventyConfig.addPlugin(pluginValidate, {
+		// Example configuration:
+		schemas: [
+			{
+				// Run this schema on the 'posts' collection.
+				// If you omit this property, the schema will run against
+				// collection items from the 'all' collection.
+				collections: ['posts'],
+				// Add your Zod schema here,
+				// using the `zod` re-exported from the plugin.
+				// This should be a Zod object.
+				schema: zod
+					.object({
+						title: zod.string(),
+						description: zod.string(),
+						draft: zod.boolean(),
+					})
+					// I suggest adding .strict() to your schema
+					// for even more accurate validation.
+					// With .strict(), extra properties
+					// you have not specified in the schema object
+					// will cause an error. For example, if you have an
+					// optional property "edited", but you misspell it as
+					// "edtied", .strict() will warn you!
+					.strict(),
+			},
+		],
+	});
+};
 ```
 
-Run Eleventy, and voila!
+</details>
+
+Run Eleventy, and voila! The plugin will warn you about collection items that do not pass schema validation.
 
 ```
 > eleventy --serve
