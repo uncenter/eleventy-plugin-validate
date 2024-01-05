@@ -52,7 +52,7 @@ export function plugin(eleventyConfig: any, opts: Options) {
 
 				// Now, loop through the items that we have narrowed down to be applicable here.
 				for (const item of items) {
-					// Use a hack to get *just* the front matter data, nothing else (allos for usage of .strict() on Zod schemas).
+					// Use a hack to get *just* the front matter data, nothing else (allows for usage of .strict() on Zod schemas since there is no other properties).
 					const fm = item.template._frontMatter.data;
 					// Safely parse the front matter with the user's schema.
 					const result = schema.schema.safeParse(fm);
