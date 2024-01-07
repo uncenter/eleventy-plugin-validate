@@ -25,8 +25,8 @@ export type Options = {
 };
 
 export const defaultOptions: Partial<Options> = {
-    validator: 'zod',
-    schemas: []
+	validator: 'zod',
+	schemas: [],
 };
 
 /**
