@@ -76,7 +76,7 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 			// Now that we have gone through all of the user defined schemas and gathered any issues, loop through them.
 			for (const { data, issue } of issues) {
 				log.error(
-					`[${data.path}] ${validators[options.validator].format(issue)})`,
+					`[${data.path}] ${validators[options.validator].format(issue)}`,
 				);
 			}
 
