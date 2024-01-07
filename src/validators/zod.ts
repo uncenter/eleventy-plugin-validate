@@ -23,12 +23,8 @@ export const zod = {
 					.join(', ')}`;
 				break;
 			}
-			case 'invalid_date': {
-				message = `${issue.message}`;
-				break;
-			}
 			case 'invalid_string': {
-				message = `${issue.message}`;
+				message = `invalid ${issue.validation}`;
 				break;
 			}
 			case 'too_small': {
@@ -43,11 +39,11 @@ export const zod = {
 				message =
 					issue.type === 'date'
 						? `${issue.type} must be ${
-								issue.inclusive ? 'less than or equal to' : 'less than'
-							} ${issue.minimum}`
+								issue.inclusive ? 'greater than or equal to' : 'greater than'
+							} ${new Date(issue.minimum as any).toISOString()}`
 						: `${issue.type} must contain ${
 								issue.inclusive ? 'at most' : 'less than'
-							} ${(issue.minimum as unknown as Date).toISOString()}${
+							} ${issue.minimum}${
 								items === undefined
 									? ''
 									: ' ' + pluralize(items, issue.minimum as number)
@@ -68,10 +64,10 @@ export const zod = {
 					issue.type === 'date'
 						? `${issue.type} must be ${
 								issue.inclusive ? 'less than or equal to' : 'less than'
-							} ${issue.maximum}`
+							} ${new Date(issue.maximum as any).toISOString()}`
 						: `${issue.type} must contain ${
 								issue.inclusive ? 'at most' : 'less than'
-							} ${(issue.maximum as unknown as Date).toISOString()}${
+							} ${issue.maximum}${
 								items === undefined
 									? ''
 									: ' ' + pluralize(items, issue.maximum as number)
@@ -85,6 +81,6 @@ export const zod = {
 				);
 			}
 		}
-		return `${property ? property + ': ' : ''}${message}`;
+		return `${property ? property + ': ' : ''}${message} (zod_${issue.code})`;
 	},
 };
