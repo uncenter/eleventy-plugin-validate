@@ -3,12 +3,11 @@ import type { ZodIssue } from 'zod';
 
 import { mergeOptions, validateOptions } from './options';
 import { log } from './utils';
-
-export { z as zod } from 'zod';
+import { validators } from './validators';
 
 const DUMMY_COLLECTION_NAME = '__eleventy-plugin-validate';
 
-export function plugin(eleventyConfig: any, opts: Options) {
+export default function plugin(eleventyConfig: any, opts: Options) {
 	if (opts === null || typeof opts !== 'object')
 		throw new Error(`options: expected an object but received ${typeof opts}`);
 	const options = mergeOptions(opts);
@@ -55,7 +54,7 @@ export function plugin(eleventyConfig: any, opts: Options) {
 					// Use a hack to get *just* the front matter data, nothing else (allows for usage of .strict() on Zod schemas since there is no other properties).
 					const fm = item.template._frontMatter.data;
 					// Safely parse the front matter with the user's schema.
-					const result = schema.schema.safeParse(fm);
+					const result = validators[options.validator].parse(schema.schema, fm);
 
 					if (!result.success) {
 						issues.push(
@@ -76,30 +75,9 @@ export function plugin(eleventyConfig: any, opts: Options) {
 
 			// Now that we have gone through all of the user defined schemas and gathered any issues, loop through them.
 			for (const { data, issue } of issues) {
-				// Lots of formatting...
-				let message = '';
-				let path = issue.path.join('.');
-				path = path ? path + ': ' : '';
-				switch (issue.code) {
-					case 'invalid_type': {
-						message = `${path}expected a${
-							[...'aeiouy'].includes(issue.expected.at(0) as string) ? 'n' : ''
-						} ${issue.expected} but received ${issue.received}`;
-						break;
-					}
-					case 'unrecognized_keys': {
-						message = `${path}unknown key${
-							issue.keys.length > 1 ? 's' : ''
-						} ${issue.keys.map((x: any) => `"${x}"`).join(', ')}`;
-						break;
-					}
-					default: {
-						throw new Error(
-							`Unknown or unimplemented Zod issue code: ${issue.code}`,
-						);
-					}
-				}
-				log.error(`[${data.path}] ${message}`);
+				log.error(
+					`[${data.path}] ${validators[options.validator].format(issue)})`,
+				);
 			}
 
 			// Throw an error if there was at least one issue.

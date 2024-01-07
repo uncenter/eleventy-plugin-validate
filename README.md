@@ -19,11 +19,13 @@ Setup the plugin in the Eleventy config file.
     <summary>CJS</summary>
 
 ```js
-const { plugin: pluginValidate, zod } = require('eleventy-plugin-validate');
+const pluginValidate = require('eleventy-plugin-validate');
+const { z } = require('zod');
 
 module.exports = (eleventyConfig) => {
 	eleventyConfig.addPlugin(pluginValidate, {
-		// Example configuration:
+		// Select the Zod library for schemas:
+		validator: 'zod',
 		schemas: [
 			{
 				// `collections: ['posts']` tells the plugin
@@ -33,14 +35,13 @@ module.exports = (eleventyConfig) => {
 				// collection that Eleventy generates for you).
 				collections: ['posts'],
 
-				// `schema` should be a Zod object.
-				// You can use the `zod` re-exported from the plugin to
-				// create the schema.
-				schema: zod
+				// `schema` should be a schema made with the validator
+				// library selected in the above 'validator' property.
+				schema: z
 					.object({
-						title: zod.string(),
-						description: zod.string(),
-						draft: zod.boolean(),
+						title: z.string(),
+						description: z.string(),
+						draft: z.boolean(),
 					})
 					// I suggest adding .strict() to your schema
 					// for even more accurate validation.
@@ -62,11 +63,13 @@ module.exports = (eleventyConfig) => {
     <summary>ESM (requires <code>@11ty/eleventy@v3</code>)</summary>
 
 ```js
-import { plugin as pluginValidate, zod } from 'eleventy-plugin-validate';
+import pluginValidate from 'eleventy-plugin-validate';
+import { z } from 'zod';
 
 export default (eleventyConfig) => {
 	eleventyConfig.addPlugin(pluginValidate, {
-		// Example configuration:
+		// Select the Zod library for schemas:
+		validator: 'zod',
 		schemas: [
 			{
 				// `collections: ['posts']` tells the plugin
@@ -76,14 +79,13 @@ export default (eleventyConfig) => {
 				// collection that Eleventy generates for you).
 				collections: ['posts'],
 
-				// `schema` should be a Zod object.
-				// You can use the `zod` re-exported from the plugin to
-				// create the schema.
-				schema: zod
+				// `schema` should be a schema made with the validator
+				// library selected in the above 'validator' property.
+				schema: z
 					.object({
-						title: zod.string(),
-						description: zod.string(),
-						draft: zod.boolean(),
+						title: z.string(),
+						description: z.string(),
+						draft: z.boolean(),
 					})
 					// I suggest adding .strict() to your schema
 					// for even more accurate validation.

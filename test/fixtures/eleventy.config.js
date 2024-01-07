@@ -1,28 +1,29 @@
-const { zod, plugin } = require('../../dist/index.cjs');
+const pluginValidate = require('../../dist/index.cjs');
+const { z } = require('zod');
 
 module.exports = (eleventyConfig) => {
 	eleventyConfig.addCollection('posts', (collectionsApi) => {
 		return collectionsApi.getFilteredByGlob('./posts/*.md');
 	});
 
-	eleventyConfig.addPlugin(plugin, {
+	eleventyConfig.addPlugin(pluginValidate, {
 		schemas: [
 			{
 				collections: ['posts'],
-				schema: zod
+				schema: z
 					.object({
-						title: zod.string(),
-						description: zod.string(),
-						draft: zod.boolean(),
+						title: z.string(),
+						description: z.string(),
+						draft: z.boolean(),
 					})
 					.strict(),
 			},
 			{
 				collections: ['tips'],
-				schema: zod.object({
-					title: zod.string(),
-					description: zod.string(),
-					date: zod.date(),
+				schema: z.object({
+					title: z.string(),
+					description: z.string(),
+					date: z.date().min(new Date('2024-01-07')),
 				}),
 			},
 		],

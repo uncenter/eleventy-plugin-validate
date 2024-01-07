@@ -16,6 +16,7 @@ export const OptionsSchema = z.object({
 });
 
 export type Options = {
+	validator: 'zod';
 	schemas: {
 		collections?: string[];
 		schema: ZodSchema;
