@@ -42,7 +42,7 @@ export const zod = {
 								issue.inclusive ? 'greater than or equal to' : 'greater than'
 							} ${new Date(issue.minimum as any).toISOString()}`
 						: `${issue.type} must contain ${
-								issue.inclusive ? 'at most' : 'less than'
+								issue.inclusive ? 'at least' : 'more than'
 							} ${issue.minimum}${
 								items === undefined
 									? ''
