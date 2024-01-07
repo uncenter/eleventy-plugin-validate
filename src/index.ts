@@ -1,5 +1,5 @@
 import type { Options } from './options';
-import type { ZodIssue } from 'zod';
+import type { ValidatorIssue } from './validators';
 
 import { mergeOptions, validateOptions } from './options';
 import { log } from './utils';
@@ -21,7 +21,7 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 					path: string;
 					data: Record<string, unknown>;
 				};
-				issue: ZodIssue;
+				issue: ValidatorIssue;
 			}[] = [];
 
 			// Get a list of every collection item.
@@ -51,7 +51,7 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 
 				// Now, loop through the items that we have narrowed down to be applicable here.
 				for (const item of items) {
-					// Use a hack to get *just* the front matter data, nothing else (allows for usage of .strict() on Zod schemas since there is no other properties).
+					// Use a hack to get *just* the front matter data, nothing else (allows for usage of stricter schemas since there are no other properties).
 					const fm = item.template._frontMatter.data;
 					// Safely parse the front matter with the user's schema.
 					const result = validators[options.validator].parse(schema.schema, fm);
@@ -85,7 +85,7 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 				throw new Error(`Invalid frontmatter data provided`);
 			}
 
-			// Return dummy array so Eleventy doesn't complain
+			// Return dummy array so Eleventy doesn't complain.
 			return [];
 		},
 	);

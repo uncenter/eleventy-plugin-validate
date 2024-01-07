@@ -1,4 +1,4 @@
-import type { ZodSchema } from 'zod';
+import type { Validator, ValidatorSchema } from './validators';
 
 import extend from 'just-extend';
 import { z } from 'zod';
@@ -17,10 +17,10 @@ export const OptionsSchema = z.object({
 });
 
 export type Options = {
-	validator: 'zod';
+	validator: Validator;
 	schemas: {
 		collections?: string[];
-		schema: ZodSchema;
+		schema: ValidatorSchema;
 	}[];
 };
 
