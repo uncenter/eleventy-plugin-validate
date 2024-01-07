@@ -7,6 +7,7 @@ module.exports = (eleventyConfig) => {
 	});
 
 	eleventyConfig.addPlugin(pluginValidate, {
+		validator: 'zod',
 		schemas: [
 			{
 				collections: ['posts'],
@@ -23,7 +24,7 @@ module.exports = (eleventyConfig) => {
 				schema: z.object({
 					title: z.string(),
 					description: z.string(),
-					date: z.date().min(new Date('2024-01-07')),
+					date: z.date(),
 				}),
 			},
 		],
