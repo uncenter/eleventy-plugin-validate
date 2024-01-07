@@ -1,5 +1,4 @@
 import type { Options } from './options';
-import type { ValidatorIssue } from './validators';
 
 import { mergeOptions, validateOptions } from './options';
 import { log } from './utils';
@@ -16,17 +15,11 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 	eleventyConfig.addCollection(
 		DUMMY_COLLECTION_NAME,
 		async (collectionApi: any) => {
-			const issues: {
-				data: {
-					path: string;
-					data: Record<string, unknown>;
-				};
-				issue: ValidatorIssue;
-			}[] = [];
-
 			// Get a list of every collection item.
 			const all = collectionApi.getAll() as any[];
 			if (all.length === 0) return [];
+
+			let foundIssues = false;
 
 			// Loop through the user provided schemas.
 			for (const schema of options.schemas) {
@@ -52,38 +45,28 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 				// Now, loop through the items that we have narrowed down to be applicable here.
 				for (const item of items) {
 					// Use a hack to get *just* the front matter data, nothing else (allows for usage of stricter schemas since there are no other properties).
-					const fm = item.template._frontMatter.data;
+					const data = item.template._frontMatter?.data || {};
 					// Safely parse the front matter with the user's schema.
-					const result = validators[options.validator].parse(schema.schema, fm);
+					const result = validators[options.validator].parse(
+						schema.schema,
+						data,
+					);
 
 					if (!result.success) {
-						issues.push(
-							// Add the issues to a list, maing sure to add context to each about the item/data it came with.
-							...result.error.issues.map((i) => {
-								return {
-									data: {
-										path: item.inputPath,
-										data: fm,
-									},
-									issue: i,
-								};
-							}),
-						);
+						foundIssues = true;
+						for (const issue of result.error.issues) {
+							log.error(
+								`[${item.inputPath}] ${validators[options.validator].format(
+									issue,
+								)}`,
+							);
+						}
 					}
 				}
 			}
 
-			// Now that we have gone through all of the user defined schemas and gathered any issues, loop through them.
-			for (const { data, issue } of issues) {
-				log.error(
-					`[${data.path}] ${validators[options.validator].format(issue)}`,
-				);
-			}
-
 			// Throw an error if there was at least one issue.
-			if (issues.length > 0) {
-				throw new Error(`Invalid frontmatter data provided`);
-			}
+			if (foundIssues) throw new Error(`Invalid frontmatter data provided`);
 
 			// Return dummy array so Eleventy doesn't complain.
 			return [];
