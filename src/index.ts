@@ -1,19 +1,20 @@
 import type { Options } from './options';
 
+import { PluginError } from './error';
 import { mergeOptions, validateOptions } from './options';
 import { log } from './utils';
 import { validators } from './validators';
 
-const DUMMY_COLLECTION_NAME = '__eleventy-plugin-validate';
-
 export default function plugin(eleventyConfig: any, opts: Options) {
 	if (opts === null || typeof opts !== 'object')
-		throw new Error(`options: expected an object but received ${typeof opts}`);
+		throw new PluginError(
+			`Expected options to be an object but received ${typeof opts}`,
+		);
 	const options = mergeOptions(opts);
 	validateOptions(options);
 
 	eleventyConfig.addCollection(
-		DUMMY_COLLECTION_NAME,
+		'eleventy-plugin-validate',
 		async (collectionApi: any) => {
 			// Get a list of every collection item.
 			const all = collectionApi.getAll() as any[];
@@ -66,7 +67,8 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 			}
 
 			// Throw an error if there was at least one issue.
-			if (foundIssues) throw new Error(`Invalid frontmatter data provided`);
+			if (foundIssues)
+				throw new PluginError(`Invalid frontmatter data provided`);
 
 			// Return dummy array so Eleventy doesn't complain.
 			return [];
