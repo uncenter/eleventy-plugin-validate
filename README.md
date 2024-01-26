@@ -120,7 +120,7 @@ For example:
 
 ## Caveats
 
-This plugin uses the `addCollection` callback to access the entire data cascade of your site, which unfortunately means it adds an extra collection with no items in it. If you have ["tag pages"](https://www.11ty.dev/docs/quicktips/tag-pages/), you'll need to use [pagination filtering](https://www.11ty.dev/docs/pagination/#filtering-values) to hide it. I'm open to suggestions if you have another way of doing this!
+This plugin uses the `addCollection` callback to access the entire data cascade of your site, which unfortunately means it adds an extra collection with no items in it. If you have [tag pages](https://www.11ty.dev/docs/quicktips/tag-pages/) (or anything similar), you'll need to use [pagination filtering](https://www.11ty.dev/docs/pagination/#filtering-values) to hide the `eleventy-plugin-validate` collection. I'm open to suggestions if you have another way of doing this!
 
 ## License
 
