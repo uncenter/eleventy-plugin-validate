@@ -39,14 +39,20 @@ export const zod = {
 				message =
 					issue.type === 'date'
 						? `${issue.type} must be ${
-								issue.inclusive ? 'greater than or equal to' : 'greater than'
+								issue.inclusive
+									? 'greater than or equal to'
+									: 'greater than'
 							} ${new Date(issue.minimum as any).toISOString()}`
 						: `${issue.type} must contain ${
 								issue.inclusive ? 'at least' : 'more than'
 							} ${issue.minimum}${
 								items === undefined
 									? ''
-									: ' ' + pluralize(items, issue.minimum as number)
+									: ' ' +
+										pluralize(
+											items,
+											issue.minimum as number,
+										)
 							}`;
 
 				break;
@@ -63,14 +69,20 @@ export const zod = {
 				message =
 					issue.type === 'date'
 						? `${issue.type} must be ${
-								issue.inclusive ? 'less than or equal to' : 'less than'
+								issue.inclusive
+									? 'less than or equal to'
+									: 'less than'
 							} ${new Date(issue.maximum as any).toISOString()}`
 						: `${issue.type} must contain ${
 								issue.inclusive ? 'at most' : 'less than'
 							} ${issue.maximum}${
 								items === undefined
 									? ''
-									: ' ' + pluralize(items, issue.maximum as number)
+									: ' ' +
+										pluralize(
+											items,
+											issue.maximum as number,
+										)
 							}`;
 
 				break;
