@@ -55,8 +55,8 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 
 				// Now, loop through the items that we have narrowed down to be applicable here.
 				for (const item of items) {
-					// Use a hack to get *just* the front matter data, nothing else (allows for usage of stricter schemas since there are no other properties).
-					const data = item.template._frontMatter?.data || {};
+					const { data } = await item.template.read();
+
 					// Safely parse the front matter with the user's schema.
 					const result = validators[options.validator].parse(
 						schema.schema,

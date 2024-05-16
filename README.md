@@ -56,9 +56,6 @@ module.exports = (eleventyConfig) => {
 
 ### ESM (`@11ty/eleventy@v3` or later)
 
-> [!WARNING]
-> At the moment `eleventy-plugin-validate` only works up to `@11ty/eleventy@3.0.0-alpha.6` due to [a change that removed the internal property used to isolate data from front matter only](https://github.com/11ty/eleventy/commit/70df967456c73edfa7aa0238b48dc54adb0ee4f1#r141478000).
-
 ```js
 import pluginValidate from 'eleventy-plugin-validate';
 import { z } from 'zod';
