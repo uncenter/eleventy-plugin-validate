@@ -49,7 +49,7 @@ importers:
         specifier: ^3.2.5
         version: 3.2.5
       typescript:
-        specifier: ^5.4.3
+        specifier: ^5.4.5
         version: 5.4.5
       unbuild:
         specifier: ^2.0.0
