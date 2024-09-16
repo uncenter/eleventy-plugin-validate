@@ -41,7 +41,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.0.1",
 		"@typescript-eslint/parser": "^8.0.1",
 		"changelogithub": "^0.13.7",
-		"eslint": "^8.57.0",
+		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-unicorn": "^54.0.0",
