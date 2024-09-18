@@ -38,11 +38,3 @@ function message(
 		console[type](message);
 	}
 }
-
-export function pluralize(string: string, count: number) {
-	return count > 1 ? `${string}s` : string;
-}
-
-export function aOrAn(string: string) {
-	return [...'aeiouy'].includes(string.at(0) as string) ? 'an' : 'a';
-}
