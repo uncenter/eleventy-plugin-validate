@@ -7,7 +7,16 @@ import { PluginError } from './error';
 import { log } from './utils';
 import { validators } from './validators';
 
+// Borrowed workaround for using the keys of an object as a Zod enum: https://github.com/colinhacks/zod/discussions/839#discussioncomment-10651593.
+function zObjectKeys<T extends Record<string, any>>(obj: T) {
+	const keys = Object.keys(obj) as Extract<keyof T, string>[];
+	return z.enum(
+		keys as [Extract<keyof T, string>, ...Extract<keyof T, string>[]],
+	);
+}
+
 export const OptionsSchema = z.object({
+	validator: zObjectKeys(validators),
 	schemas: z.array(
 		z.object({
 			collections: z.optional(z.array(z.string())),
@@ -38,11 +47,11 @@ export function mergeOptions(options: Partial<Options>): Options {
 	return extend(true, defaultOptions, options) as Options;
 }
 
-export function validateOptions(options: Options): options is Options {
+export function validateOptions(options: unknown): options is Options {
 	const result = OptionsSchema.safeParse(options);
 	if (!result.success) {
 		for (const issue of result.error.issues) {
-			log.error(validators['zod'].format(issue));
+			log.error(validators.zod.format(issue));
 		}
 		throw new PluginError('Invalid options provided');
 	}
