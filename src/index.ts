@@ -67,7 +67,7 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 						foundIssues = true;
 						for (const issue of result.error.issues) {
 							log.error(
-								`[${item.inputPath}] ${validators[
+								`${item.inputPath}: ${validators[
 									options.validator
 								].format(issue)}`,
 							);

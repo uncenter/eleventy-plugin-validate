@@ -1,5 +1,7 @@
+import { PLUGIN_PREFIX } from './utils';
+
 export class PluginError extends Error {
 	constructor(message: string) {
-		super(`[eleventy-plugin-validate] ${message}`);
+		super(`${PLUGIN_PREFIX} ${message}`);
 	}
 }
