@@ -1,4 +1,4 @@
-import type { Validator, ValidatorSchema } from './validators';
+import type { ValidatorSchema } from './validators';
 
 import extend from 'just-extend';
 import { z } from 'zod';
@@ -16,7 +16,12 @@ function zObjectKeys<T extends Record<string, any>>(obj: T) {
 }
 
 export const OptionsSchema = z.object({
-	validator: zObjectKeys(validators),
+	validator: zObjectKeys(validators).or(
+		z.object({
+			parse: z.function().args(z.unknown(), z.unknown()),
+			format: z.function().args(z.unknown()).returns(z.string()),
+		}),
+	),
 	schemas: z.array(
 		z.object({
 			collections: z.optional(z.array(z.string())),
@@ -26,7 +31,12 @@ export const OptionsSchema = z.object({
 });
 
 export type Options = {
-	validator: Validator;
+	validator:
+		| keyof typeof validators
+		| {
+				parse: () => unknown;
+				format: () => string;
+		  };
 	schemas: {
 		collections?: string[];
 		schema: ValidatorSchema;
