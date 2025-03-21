@@ -23,8 +23,8 @@
 	"scripts": {
 		"build": "unbuild",
 		"test": "echo 'No tests yet...'",
-		"lint": "eslint .",
-		"format": "prettier --write ."
+		"lint": "biome lint .",
+		"format": "biome check --write ."
 	},
 	"keywords": [
 		"11ty",
@@ -36,16 +36,9 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@types/node": "^20.12.2",
-		"@typescript-eslint/eslint-plugin": "^8.0.1",
-		"@typescript-eslint/parser": "^8.0.1",
 		"changelogithub": "^0.13.7",
-		"eslint": "^8.57.0",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-import": "^2.29.1",
-		"eslint-plugin-unicorn": "^54.0.0",
-		"eslint-plugin-vitest": "^0.4.1",
-		"prettier": "^3.3.3",
 		"typescript": "^5.4.5",
 		"unbuild": "^2.0.0",
 		"vitest": "^2.0.5"
