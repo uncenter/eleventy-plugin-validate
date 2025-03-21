@@ -20,6 +20,11 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 			const all = collectionApi.getAll() as any[];
 			if (all.length === 0) return [];
 
+			const validator =
+				typeof options.validator === 'string'
+					? validators[options.validator]
+					: options.validator;
+
 			let foundIssues = false;
 
 			// Loop through the user provided schemas.
@@ -58,18 +63,13 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 					const { data } = await item.template.read();
 
 					// Safely parse the front matter with the user's schema.
-					const result = validators[options.validator].parse(
-						schema.schema,
-						data,
-					);
+					const result = validator.parse(schema.schema, data);
 
 					if (!result.success) {
 						foundIssues = true;
 						for (const issue of result.error.issues) {
 							log.error(
-								`${item.inputPath}: ${validators[
-									options.validator
-								].format(issue)}`,
+								`${item.inputPath}: ${validator.format(issue)}`,
 							);
 						}
 					}
