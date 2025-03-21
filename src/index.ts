@@ -29,23 +29,13 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 				// Loop through all entries.
 				for (const entry of all) {
 					// Loop through each of the collections this entry is a part of.
-					for (const [name, values] of Object.entries(
-						entry.data.collections,
-					)) {
+					for (const [name, values] of Object.entries(entry.data.collections)) {
 						// If collections was left blank / unpecified by the user, or the name of this collection is in the user's list of collections...
-						if (
-							!schema.collections ||
-							schema.collections.includes(name)
-						) {
+						if (!schema.collections || schema.collections.includes(name)) {
 							// Loop through each of the collection items.
 							for (const value of values as any[]) {
 								// And if we don't already have the same item in our items list (compare input paths), add it.
-								if (
-									!items.some(
-										(item) =>
-											item.inputPath === value.inputPath,
-									)
-								) {
+								if (!items.some((item) => item.inputPath === value.inputPath)) {
 									items.push(value);
 								}
 							}
@@ -67,9 +57,9 @@ export default function plugin(eleventyConfig: any, opts: Options) {
 						foundIssues = true;
 						for (const issue of result.error.issues) {
 							log.error(
-								`${item.inputPath}: ${validators[
-									options.validator
-								].format(issue)}`,
+								`${item.inputPath}: ${validators[options.validator].format(
+									issue,
+								)}`,
 							);
 						}
 					}

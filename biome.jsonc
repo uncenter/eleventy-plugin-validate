@@ -3,11 +3,11 @@
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": true,
+		"useIgnoreFile": true
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": [],
+		"ignore": []
 	},
 	"formatter": {
 		"enabled": true,
@@ -19,10 +19,12 @@
 		"lineWidth": 80,
 		"attributePosition": "auto",
 		"bracketSpacing": true,
-		"ignore": ["**/pnpm-lock.yaml"],
+		"ignore": [
+			"**/pnpm-lock.yaml"
+		]
 	},
 	"organizeImports": {
-		"enabled": true,
+		"enabled": true
 	},
 	"linter": {
 		"enabled": true,
@@ -38,7 +40,7 @@
 				"noUselessTypeConstraint": "error",
 				"noWith": "error",
 				"useDateNow": "error",
-				"useFlatMap": "error",
+				"useFlatMap": "error"
 			},
 			"correctness": {
 				"noConstAssign": "error",
@@ -66,7 +68,7 @@
 				"useArrayLiterals": "off",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
-				"useYield": "error",
+				"useYield": "error"
 			},
 			"style": {
 				"noNamespace": "error",
@@ -77,7 +79,7 @@
 				"useForOf": "error",
 				"useNodejsImportProtocol": "error",
 				"useNumberNamespace": "error",
-				"useThrowNewError": "error",
+				"useThrowNewError": "error"
 			},
 			"suspicious": {
 				"noAsyncPromiseExecutor": "error",
@@ -111,10 +113,12 @@
 				"useIsArray": "error",
 				"useNamespaceKeyword": "error",
 				"useNumberToFixedDigitsArgument": "error",
-				"useValidTypeof": "error",
-			},
+				"useValidTypeof": "error"
+			}
 		},
-		"ignore": ["**/dist/"],
+		"ignore": [
+			"**/dist/"
+		]
 	},
 	"javascript": {
 		"formatter": {
@@ -126,13 +130,13 @@
 			"bracketSameLine": false,
 			"quoteStyle": "single",
 			"attributePosition": "auto",
-			"bracketSpacing": true,
-		},
+			"bracketSpacing": true
+		}
 	},
 	"json": {
 		"formatter": {
-			"lineWidth": 1,
-		},
+			"lineWidth": 1
+		}
 	},
 	"overrides": [
 		// {
@@ -141,11 +145,13 @@
 		// 	"formatter": { "indentStyle": "space", "indentWidth": 2 }
 		// },
 		{
-			"include": ["**/*.md"],
+			"include": [
+				"**/*.md"
+			],
 			"formatter": {
 				"indentStyle": "space",
-				"indentWidth": 2,
-			},
-		},
-	],
+				"indentWidth": 2
+			}
+		}
+	]
 }
