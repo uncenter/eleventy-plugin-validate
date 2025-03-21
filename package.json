@@ -36,7 +36,7 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@types/node": "^20.12.2",
+		"@types/node": "^22.13.11",
 		"@typescript-eslint/eslint-plugin": "^8.0.1",
 		"@typescript-eslint/parser": "^8.0.1",
 		"changelogithub": "^0.13.7",
