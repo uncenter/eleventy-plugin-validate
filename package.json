@@ -33,7 +33,7 @@
 	],
 	"dependencies": {
 		"just-extend": "^6.2.0",
-		"zod": "^3.23.8"
+		"zod": "^3.25.76"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
